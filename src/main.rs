@@ -1,6 +1,8 @@
 use reqwest::blocking;
 use std::{fmt, io, process};
 
+//TODO: rework the way the tree is built!!!!
+
 fn main() {
     println!("What website would you like to crawl?");
 
