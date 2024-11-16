@@ -68,28 +68,26 @@ impl Node {
         };
         eprintln!("Connected to {}", self.url);
         
-        let chars: Vec<_> = text.chars().collect();
+        // remove any non ascii bcs that breaks it lol
+        let chars: String = text.chars()
+                                .filter(|x| !x.is_ascii()).collect();
 
         for i in 0..chars.len()-3 {
-            if chars[i..i+3].to_string().contains("<a ") {
-                for j in i..chars.len()-6 {
-                    if chars[j..j+6].contains("href=\"") {
-                        let mut url = String::new();
-                        for k in j+7..chars.len() {
-                            if chars[k] == '"' {
-                                url = chars[j+7..k].to_string();
-                                break;
-                            }
-                        }
-                        dbg!(&url);
-                        if url.contains("https://") || url.contains("http://") {
-                            links.push(url);
-                        } else {
-                            links.push(self.url.clone() + &url);
-                        }
+            if chars[i..i+3] == "<a " {
+                for j in i+3..chars.len()-5 {
+                    if chars[j..j+5] == "href=" {
+
                     }
                 }
             }
+
+            dbg!(&url);
+            if url.contains("https://") || url.contains("http://") {
+                links.push(url);
+            } else {
+                links.push(self.url.clone() + &url);
+            }
+            chars.next();
         }
         return links;
     }
